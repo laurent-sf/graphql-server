@@ -1,0 +1,29 @@
+#####################################################
+### A simple docker-compose to create a testing environment.
+#####################################################
+version: "3.5"
+services:  
+############### MongoDB #####################
+  mongodb:
+    container_name: mongodb
+    image: 'mongo'   
+    volumes:
+      - mongo-data:/data/db
+      - mongo-config:/data/configdb
+############### Server #####################
+  server:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - ./app:/app
+      - /app/node_modules
+    ports:
+      - 4000:4000
+    environment:
+      - MONGO_HOST=mongodb
+      - MONGO_PORT=27017
+############### Persistent Volume #####################
+volumes:
+  mongo-data:
+  mongo-config:
