@@ -1,0 +1,12 @@
+version: "3"
+services:
+  mongo-seed:
+    build: .
+    environment:
+      - MONGO_HOST=mongodb
+      - MONGO_PORT=27017 
+    networks:
+      - local-env
+networks:
+  local-env:
+    external: true

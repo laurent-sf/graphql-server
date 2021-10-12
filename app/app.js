@@ -1,7 +1,7 @@
 const { ApolloServer } = require("apollo-server");
 const { MongoClient } = require("mongodb");
 const { ReservationsAPI} =  require('./data-sources/reservations.js');
-const { PropertiesAPI} =  require('./data-sources/properties.js');
+const { RestaurantsAPI} =  require('./data-sources/restaurants.js');
 
 const typeDefs = require("./typedefs");
 const resolvers = require('./resolvers');
@@ -18,8 +18,6 @@ client.connect().then((_,error) => {
     console.log(error);
   } else {
     console.log(`🚀 Connected to ${url}`);
-    //console.log('Seeding data');
-    //client.db().collection('properties').insertOne({name: 'Aria'});
   }
 });
 
@@ -29,7 +27,7 @@ const server = new ApolloServer({
   resolvers: resolvers,
   dataSources: () => ({
     reservationsAPI: new ReservationsAPI(client.db().collection('reservations')),
-    propertiesAPI: new PropertiesAPI(client.db().collection('properties'))
+    restaurantsAPI: new RestaurantsAPI(client.db().collection('restaurants')),
   }),
 });
 

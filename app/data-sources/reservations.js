@@ -8,10 +8,10 @@ class ReservationsAPI extends MongoDataSource {
     return this.collection.find().toArray();
   }
   
-  async bookRoom(args) {
-    const result = await this.collection.insertOne({property: args});
+  async createReservation(args) {
+    const result = await this.collection.insertOne({restaurant: args});
     console.log(`New reservation: ${result.insertedId}`);
-    return result.insertedId;
+    return this.collection.find().toArray();
   }
 }
 

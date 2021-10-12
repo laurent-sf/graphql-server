@@ -1,23 +1,32 @@
 module.exports = {
   Query: {
+    restaurant: (_, { id }, { dataSources: { restaurantsAPI } }) =>
+      restaurantsAPI.getRestaurant(id),
+    restaurants: (_, __, { dataSources: { restaurantsAPI } }) =>
+      restaurantsAPI.getRestaurants(),
+
     reservation: (_, { id }, { dataSources: { reservationsAPI } }) =>
       reservationsAPI.getReservation(id),
     reservations: (_, __, { dataSources: { reservationsAPI } }) =>
       reservationsAPI.getReservations(),
-    
-    property: (_, { id }, { dataSources: { propertiesAPI } }) =>
-      propertiesAPI.getProperty(id),
-    properties: (_, __, { dataSources: { propertiesAPI } }) =>
-      propertiesAPI.getProperties(),
   },
   Mutation: {
-    bookRoom: async (
+    createReservation: async (
       _,
-      { pid },
-      { dataSources: { reservationsAPI, propertiesAPI } }
+      { restaurantId },
+      { dataSources: { restaurantsAPI, reservationsAPI } }
     ) => {
-      const property = await propertiesAPI.getProperty(pid);
-      return reservationsAPI.bookRoom(property);
+      const restaurant = await restaurantsAPI.getRestaurant(restaurantId);
+      if(restaurant){
+        return reservationsAPI.createReservation(restaurant);
+      }
+    },
+    incrementRestaurantsVersion: async (
+      _,
+      __,
+      { dataSources: { restaurantsAPI } }
+    ) => {
+      return restaurantsAPI.incrementRestaurantsVersion();
     },
   },
 };

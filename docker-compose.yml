@@ -10,11 +10,11 @@ services:
     volumes:
       - mongo-data:/data/db
       - mongo-config:/data/configdb
+    networks:
+      - local-env      
 ############### Server #####################
   server:
-    build:
-      dockerfile: Dockerfile
-      context: .
+    build: .
     volumes:
       - ./app:/app
       - /app/node_modules
@@ -23,7 +23,13 @@ services:
     environment:
       - MONGO_HOST=mongodb
       - MONGO_PORT=27017
+    networks:
+      - local-env        
 ############### Persistent Volume #####################
 volumes:
   mongo-data:
   mongo-config:
+networks:
+  local-env:
+    name: local-env
+    driver: bridge

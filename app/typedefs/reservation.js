@@ -3,7 +3,7 @@ const { gql } = require("apollo-server");
 const reservation = gql`
   type Reservation {
     _id: ID!
-    property: Property!
+    restaurant: Restaurant!
   }
   
   extend type Query {
@@ -12,8 +12,7 @@ const reservation = gql`
   }
 
   extend type Mutation {
-    bookRoom(pid: ID!): ID
-    cancelReservation(id: ID!): Boolean!
+    createReservation(restaurantId: ID!): [Reservation]
   }
 `;
 
