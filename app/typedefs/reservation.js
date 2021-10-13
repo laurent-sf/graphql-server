@@ -3,9 +3,9 @@ const { gql } = require("apollo-server");
 const reservation = gql`
   type Reservation {
     _id: ID!
-    restaurant: Restaurant!
+    restaurant: NestedRestaurant!
   }
-  
+
   extend type Query {
     reservation(id: ID!): Reservation
     reservations: [Reservation!]
